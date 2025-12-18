@@ -46,6 +46,11 @@ typedef struct s_map
     char **map;
     char *temp;
     int lines;
+    int x;
+    int y;
+    int x_limit;
+    int y_limit;
+    char type;
     t_files *files;
 } t_map;
 
@@ -78,7 +83,6 @@ int coordinates_parser(t_map *map_data);
 
 //Aux_coordinates.c
 int check_order(t_parse_flags *flags);
-int newline_parser(t_parse_flags *flags);
 int realloc_coordinates(t_map *map_data, t_parse_flags *flags);
 
 //Parser.c

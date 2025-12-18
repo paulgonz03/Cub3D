@@ -58,11 +58,6 @@ int check_flags(t_parse_flags *flags)
         printf("Error: coordinate order\n");
         return (0);
     }
-    if (!newline_parser(flags))
-    {
-        printf("Error: more newlines\n");
-        return (0);
-    }
     return (1);
 }
 
