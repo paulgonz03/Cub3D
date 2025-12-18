@@ -2,7 +2,7 @@ NAME = cube
 CC = cc
 CCFLAGS = -Wall -Wextra -Werror
 
-SRC = cube.c ./gnl/map.c ./gnl/get_next_line.c ./gnl/get_next_line_utils.c ./parser/parser.c ./parser/coordinates.c ./parser/utils_parser.c\
+SRC = cube.c ./gnl/map.c ./gnl/get_next_line.c ./gnl/get_next_line_utils.c ./parser/parser.c ./parser/coordinates.c ./parser/aux_coordinates.c ./parser/utils_parser.c\
 
 OBJS = ${SRC:%.c=objects/%.o}
 

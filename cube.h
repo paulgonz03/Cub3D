@@ -74,8 +74,12 @@ int get_map(char **argv, t_map *map_data);
 void find_coordinates(t_map *map_data, t_parse_flags *flags);
 int check_flags(t_parse_flags *flags);
 int fill_coordinates(t_map *map_data, t_parse_flags *flags);
-int realloc_coordinates(t_map *map_data, t_parse_flags *flags);
 int coordinates_parser(t_map *map_data);
+
+//Aux_coordinates.c
+int check_order(t_parse_flags *flags);
+int newline_parser(t_parse_flags *flags);
+int realloc_coordinates(t_map *map_data, t_parse_flags *flags);
 
 //Parser.c
 int name_map_parser(char **argv);

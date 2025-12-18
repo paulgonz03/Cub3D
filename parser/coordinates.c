@@ -43,8 +43,7 @@ void find_coordinates(t_map *map_data, t_parse_flags *flags)
 
 int check_flags(t_parse_flags *flags)
 {
-    if (flags->c == 0 || flags->f == 0 || flags->no == 0 ||
-        flags->so == 0 || flags->we == 0 || flags->ea == 0)
+    if (flags->c == 0 || flags->f == 0 || flags->no == 0 || flags->so == 0 || flags->we == 0 || flags->ea == 0)
     {
         printf("Error: Missing coordinates\n");
         return (0);
@@ -52,6 +51,16 @@ int check_flags(t_parse_flags *flags)
     if (flags->c > 1 || flags->f > 1 || flags->no > 1 || flags->so > 1 || flags->we > 1 || flags->ea > 1)
     {
         printf("Error: more coordinates\n");
+        return (0);
+    }
+    if (!check_order(flags))
+    {
+        printf("Error: coordinate order\n");
+        return (0);
+    }
+    if (!newline_parser(flags))
+    {
+        printf("Error: more newlines\n");
         return (0);
     }
     return (1);
@@ -88,23 +97,6 @@ int fill_coordinates(t_map *map_data, t_parse_flags *flags)
     return (1);
 }
 
-int realloc_coordinates(t_map *map_data, t_parse_flags *flags)
-{
-    if (!realloc_map(map_data, flags->pos_no))
-        return (0);
-    if (!realloc_map(map_data, flags->pos_so))
-        return (0);
-    if (!realloc_map(map_data, flags->pos_we))
-        return (0);
-    if (!realloc_map(map_data, flags->pos_ea))
-        return (0);
-    if (!realloc_map(map_data, flags->pos_f))
-        return (0);
-    if (!realloc_map(map_data, flags->pos_c))
-        return (0);
-    return(1);
-}
-
 int coordinates_parser(t_map *map_data)
 {
     t_parse_flags *flags;
@@ -118,6 +110,5 @@ int coordinates_parser(t_map *map_data)
         return (0);
     if (!realloc_coordinates(map_data, flags))
         return (0);
-    printmap(map_data->map);
     return (1);
 }

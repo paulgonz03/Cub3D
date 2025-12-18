@@ -32,7 +32,6 @@ int main(int argc, char **argv)
         return (printf("Error name map\n"));
     if (!get_map(argv, map))
         return (printf("Error get_map\n"));
-    printmap(map->map);
     if (!parser(map))
         return(0);
 }
