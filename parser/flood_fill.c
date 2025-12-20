@@ -1,5 +1,27 @@
 #include "cube.h"
 
+char **copy_map(t_map *map_data)
+{
+    int j;
+    int i;
+    char **temp;
+
+    j = 0;
+    i = 0;
+    while (map_data->map[j])
+        j++;
+    temp = ft_calloc(j + 1, sizeof(char *));
+    j = 0;
+    while (map_data->map[j])
+    {
+        temp[i] = ft_strdup(map_data->map[j]);
+        i++;
+        j++;
+    }
+    temp[i] = '\0';
+    return(temp);
+}
+
 void find_player(t_map *map_data)
 {
     map_data->y = 0;
@@ -67,12 +89,12 @@ int flood_fill(t_map *map_data)
 {
     char **temp;
 
-    temp = map_data->map;
+    temp = copy_map(map_data);
     find_player(map_data);
     limits_map(map_data);
     if (!aux_flood_fill(map_data, map_data->x, map_data->y, temp))
     {
-        printf("Error: Mapa no está cerrado correctamente\n");
+        printf("Error: open map\n");
         return (0);
     }
     return (1);
