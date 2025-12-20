@@ -6,14 +6,14 @@ LIBFT = $(LIBFT_PATH)/libft.a
 MLX = $(MLX_PATH)/libmlx.a
 CC = cc
 
-SRC = cube.c \
+SRC = cube.c free.c \
 ./gnl/map.c ./gnl/get_next_line.c ./gnl/get_next_line_utils.c \
 ./parser/flood_fill.c ./parser/parser.c ./parser/coordinates.c ./parser/aux_coordinates.c ./parser/utils_parser.c \
 ./raycast/raycast.c
 
 OBJS = ${SRC:%.c=objects/%.o}
 
-CFLAGS = -Wall -Wextra -Werror -I. -I/usr/include -I$(MLX_PATH)
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address -I. -I/usr/include -I$(MLX_PATH)
 
 all: $(NAME)
 

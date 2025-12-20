@@ -19,7 +19,7 @@ char **copy_map(t_map *map_data)
         j++;
     }
     temp[i] = '\0';
-    return(temp);
+    return (temp);
 }
 
 void find_player(t_map *map_data)
@@ -94,8 +94,10 @@ int flood_fill(t_map *map_data)
     limits_map(map_data);
     if (!aux_flood_fill(map_data, map_data->x, map_data->y, temp))
     {
+        ft_free_free(temp);
         printf("Error: open map\n");
         return (0);
     }
+    ft_free_free(temp);
     return (1);
 }

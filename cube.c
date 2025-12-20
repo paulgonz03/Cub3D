@@ -23,17 +23,31 @@ void printmap(char **map)
 
 int main(int argc, char **argv)
 {
-    t_map *map;
+    t_map *map_data;
 
-    map = ft_calloc(1, sizeof(t_map));
     if (argc != 2)
-        return (printf("Error arguments\n"));
-    if (!name_map_parser(argv))
-        return (printf("Error name map\n"));
-    if (!get_map(argv, map))
-        return (printf("Error get_map\n"));
-    if (!parser(map))
+    {
+        printf("Error: not enough arguments\n");
         return (0);
-    if (!raycast(map))
-        return(0);
+    }
+    map_data = ft_calloc(1, sizeof(t_map));
+    if (!map_data)
+    {
+        printf("Error: failed create struct\n");
+        return (0);
+    }
+    if (!name_map_parser(argv))
+        return (error(map_data, "Error: name map file"));
+    if (!get_map(argv, map_data))
+        return (error(map_data, "Error get_map\n"));
+    if (!parser(map_data))
+    {
+        free_mapdata(map_data);
+        return (0);
+    }
+    if (!raycast(map_data))
+    {
+        free_mapdata(map_data);
+        return (0);
+    }
 }

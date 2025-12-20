@@ -29,9 +29,7 @@
 
 enum
 {
-    FLOOR = 0,
-    CEILING,
-    NO,
+    NO = 0,
     SO,
     WE,
     EA,
@@ -68,7 +66,7 @@ typedef struct s_mlx
 {
     void *mlx;
     void *win;
-    void *image[4];
+    void *image[5];
     int img_width;
     int img_height;
 
@@ -93,8 +91,14 @@ typedef struct s_map
 // Raycast.c
 int raycast(t_map *map_data);
 
-// MAIN
+// MAIN.C
 void printmap(char **map);
+
+//FREE.C
+int error(t_map *map_data, char *mes);
+void free_files(t_files *files);
+void free_mlx(t_mlx *mlx);
+void free_mapdata(t_map *map_data);
 
 // GNL
 

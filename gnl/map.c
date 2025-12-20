@@ -6,7 +6,7 @@ int aux_get_map(char **argv, t_map *data_map)
     int j;
 
     j = 0;
-    data_map->map = ft_calloc(data_map->lines, sizeof(char *));
+    data_map->map = ft_calloc(data_map->lines + 1, sizeof(char *));
     if (!data_map->map)
         return (0);
     fd = open(argv[1], O_RDONLY);
@@ -18,9 +18,8 @@ int aux_get_map(char **argv, t_map *data_map)
     data_map->map[j] = get_next_line(fd);
     while (data_map->map[j++] != NULL)
     {
-
         data_map->map[j] = get_next_line(fd);
-        if (data_map->map[j] == NULL) // llegar al final del mapa
+        if (data_map->map[j] == NULL)
             break;
     }
     return(1);

@@ -100,10 +100,20 @@ int coordinates_parser(t_map *map_data)
     flags = ft_calloc(1, sizeof(t_parse_flags));
     find_coordinates(map_data, flags);
     if (!check_flags(flags))
+    {
+        free(flags);
         return (0);
+    }
     if (!fill_coordinates(map_data, flags))
+    {
+        free(flags);
         return (0);
+    }
     if (!realloc_coordinates(map_data, flags))
+    {
+        free(flags);
         return (0);
+    }
+    free(flags);
     return (1);
 }
