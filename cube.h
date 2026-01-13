@@ -36,22 +36,6 @@ enum
     TOTAL
 };
 
-typedef struct s_parse_flags
-{
-    int no;
-    int pos_no;
-    int so;
-    int pos_so;
-    int we;
-    int pos_we;
-    int ea;
-    int pos_ea;
-    int f;
-    int pos_f;
-    int c;
-    int pos_c;
-} t_parse_flags;
-
 typedef struct s_files
 {
     char *no_file;
@@ -80,7 +64,6 @@ typedef struct s_mlx
 typedef struct s_map
 {
     char **map;
-    char *temp;
     int lines;
     int x;
     int y;
@@ -125,15 +108,8 @@ int get_map(char **argv, t_map *map_data);
 
 // PARSER.C
 
-// Aux_coordinates.c
-int check_order(t_parse_flags *flags);
-int realloc_coordinates(t_map *map_data, t_parse_flags *flags);
-
 // Coordinates.c
-void find_coordinates(t_map *map_data, t_parse_flags *flags);
-int check_flags(t_parse_flags *flags);
-char *clean_path(char *line);
-int fill_coordinates(t_map *map_data, t_parse_flags *flags);
+int realloc_map(t_map *map_data, int pos);
 int coordinates_parser(t_map *map_data);
 
 // Flood_fill.c
@@ -148,6 +124,5 @@ int parser(t_map *map_data);
 
 // Utils_parser.c
 void ft_free_free(char **temp);
-int realloc_map(t_map *map_data, int pos);
 
 #endif

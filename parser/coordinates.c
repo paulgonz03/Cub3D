@@ -1,132 +1,87 @@
 #include "cube.h"
 
-void find_coordinates(t_map *map_data, t_parse_flags *flags)
+int realloc_map(t_map *map_data, int pos)
 {
-    int i;
-
-    i = 0;
-    while (map_data->map[i])
-    {
-        if (ft_strncmp(map_data->map[i], "NO", 2) == 0)
-        {
-            flags->pos_no = i;
-            flags->no++;
-        }
-        if (ft_strncmp(map_data->map[i], "SO", 2) == 0)
-        {
-            flags->pos_so = i;
-            flags->so++;
-        }
-        if (ft_strncmp(map_data->map[i], "WE", 2) == 0)
-        {
-            flags->pos_we = i;
-            flags->we++;
-        }
-        if (ft_strncmp(map_data->map[i], "EA", 2) == 0)
-        {
-            flags->pos_ea = i;
-            flags->ea++;
-        }
-        if (ft_strncmp(map_data->map[i], "F", 1) == 0)
-        {
-            flags->pos_f = i;
-            flags->f++;
-        }
-        if (ft_strncmp(map_data->map[i], "C", 1) == 0)
-        {
-            flags->pos_c = i;
-            flags->c++;
-        }
-        i++;
-    }
-}
-
-int check_flags(t_parse_flags *flags)
-{
-    if (flags->c == 0 || flags->f == 0 || flags->no == 0 || flags->so == 0 || flags->we == 0 || flags->ea == 0)
-    {
-        printf("Error: Missing coordinates\n");
-        return (0);
-    }
-    if (flags->c > 1 || flags->f > 1 || flags->no > 1 || flags->so > 1 || flags->we > 1 || flags->ea > 1)
-    {
-        printf("Error: more coordinates\n");
-        return (0);
-    }
-    if (!check_order(flags))
-    {
-        printf("Error: coordinate order\n");
-        return (0);
-    }
-    return (1);
-}
-
-char *clean_path(char *line)
-{
-    char *path;
-    int i;
+    char **new_map;
     int j;
-    
-    i = 0;
-    while (line[i] && line[i] != ' ')
-        i++;
-    while (line[i] && line[i] == ' ')
-        i++;
+    int i;
+    int lines;
+    int newline;
+
     j = 0;
-    path = malloc(ft_strlen(&line[i]) + 1);
-    if (!path)
-        return (NULL);
-    while (line[i] && line[i] != '\n')
+    i = 0;
+    lines = 0;
+    newline = 0;
+    while (map_data->map[lines])
+        lines++;
+    new_map = ft_calloc(lines, sizeof(char *));
+    if (!new_map)
+        return (0);
+    while (map_data->map[j])
     {
-        path[j] = line[i];
-        i++;
+        if (j == pos)
+        {
+            if (map_data->map[j+1][0] == '\n')
+            {
+                j++;
+                newline++;
+            }
+            j++;
+            continue;
+        }
+        if (newline > 1)
+        {
+            printf("Error: more newlines\n");
+            return (0);
+        }
+        if (map_data->map[j])
+            new_map[i++] = ft_strdup(map_data->map[j]);
         j++;
     }
-    path[j] = '\0';
-    return (path);
-}
-
-int fill_coordinates(t_map *map_data, t_parse_flags *flags)
-{
-    map_data->files = ft_calloc(1, sizeof(t_files));
-    if (!map_data->files)
-        return (0);
-    map_data->files->no_file = clean_path(map_data->map[flags->pos_no]);
-    map_data->files->so_file = clean_path(map_data->map[flags->pos_so]);
-    map_data->files->we_file = clean_path(map_data->map[flags->pos_we]);
-    map_data->files->ea_file = clean_path(map_data->map[flags->pos_ea]);
-    map_data->files->f_file = clean_path(map_data->map[flags->pos_f]);
-    map_data->files->c_file = clean_path(map_data->map[flags->pos_c]);
-    
-    if (!map_data->files->no_file || !map_data->files->so_file || 
-        !map_data->files->we_file || !map_data->files->ea_file ||
-        !map_data->files->f_file || !map_data->files->c_file)
-        return (0);
-    
+    new_map[i] = NULL;
+    ft_free_free(map_data->map);
+    map_data->map = new_map;
     return (1);
 }
 
 int coordinates_parser(t_map *map_data)
 {
-    t_parse_flags *flags;
+    int     i;
+    int     j;
+    char    *coords[6];
 
-    flags = ft_calloc(1, sizeof(t_parse_flags));
-    find_coordinates(map_data, flags);
-    if (!check_flags(flags))
+    coords[0] = "NO";
+    coords[1] = "SO";
+    coords[2] = "WE";
+    coords[3] = "EA";
+    coords[4] = "F";
+    coords[5] = "C";
+    i = 0;
+    j = 0;
+    while (map_data->map[i] && j < 6)
     {
-        free(flags);
-        return (0);
+        if (map_data->map[i][0] == '\n')
+            i++;
+        else if (ft_strncmp(map_data->map[i], coords[j], ft_strlen(coords[j])) == 0)
+        {
+            if (j == 0)
+                map_data->files->no_file = ft_strtrim(map_data->map[i] + ft_strlen(coords[j]), " \t\n");
+            else if (j == 1)
+                map_data->files->so_file = ft_strtrim(map_data->map[i] + ft_strlen(coords[j]), " \t\n");
+            else if (j == 2)
+                map_data->files->we_file = ft_strtrim(map_data->map[i] + ft_strlen(coords[j]), " \t\n");
+            else if (j == 3)
+                map_data->files->ea_file = ft_strtrim(map_data->map[i] + ft_strlen(coords[j]), " \t\n");
+            else if (j == 4)
+                map_data->files->f_file = ft_strtrim(map_data->map[i] + ft_strlen(coords[j]), " \t\n");
+            else if (j == 5)
+                map_data->files->c_file = ft_strtrim(map_data->map[i] + ft_strlen(coords[j]), " \t\n");
+            if (!realloc_map(map_data, i))
+                return (0);
+            j++;
+        }
+        else
+            return (0);
     }
-    if (!fill_coordinates(map_data, flags))
-    {
-        free(flags);
-        return (0);
-    }
-    if (!realloc_coordinates(map_data, flags))
-    {
-        free(flags);
-        return (0);
-    }
-    free(flags);
-    return (1);
+    return (j == 6);
 }

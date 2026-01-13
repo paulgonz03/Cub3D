@@ -8,21 +8,11 @@ int char_not_allow(char **map)
     j = 0;
     while (map[j][0] == '\n')
         j++;
-    if (j > 1)
-    {
-        printf("Error: newline invalid\n");
-        return (0);
-    }
     while (map[j])
     {
         i = -1;
         while (map[j][++i])
         {
-            if (map[j][0] == '\n')
-            {
-                printf("Error: newline in map\n");
-                return (0);
-            }
             if (!(map[j][i] == '1' || map[j][i] == '0' || map[j][i] == 'N' || map[j][i] == 'S' || map[j][i] == 'O' || map[j][i] == 'E' || map[j][i] == '\n' || map[j][i] == 32))
             {
                 printf("Error: char invalid in map\n");

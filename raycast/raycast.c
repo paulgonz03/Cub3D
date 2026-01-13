@@ -54,6 +54,7 @@ int raycast(t_map *map_data)
 	}
 	map_data->mlx_data->win = mlx_new_window(map_data->mlx_data->mlx,
 											 (map_data->x_limit - 1) * 50, map_data->y_limit * 50, "Cub3D");
+	
 	mlx_hook(map_data->mlx_data->win, CLOSEWIN, 0, closewin, map_data->mlx_data);
 	mlx_key_hook(map_data->mlx_data->win, keycodes, map_data);
 	mlx_loop(map_data->mlx_data->mlx);

@@ -20,7 +20,6 @@ void free_files(t_files *files)
         free(files->no_file);
     if (files->so_file)
         free(files->so_file);
-    free(files);
 }
 
 void free_mlx(t_mlx *mlx)
@@ -52,5 +51,4 @@ void free_mapdata(t_map *map_data)
         free_files(map_data->files);
     if (map_data->mlx_data)
         free_mlx(map_data->mlx_data);
-    free(map_data);
 }

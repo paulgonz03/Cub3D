@@ -17,27 +17,24 @@ int aux_get_map(char **argv, t_map *data_map)
     }
     data_map->map[j] = get_next_line(fd);
     while (data_map->map[j++] != NULL)
-    {
         data_map->map[j] = get_next_line(fd);
-        if (data_map->map[j] == NULL)
-            break;
-    }
     return(1);
 }
 
 int get_map(char **argv, t_map *map_data)
 {
     int fd;
+    char *temp;
 
     map_data->lines = 0;
     fd = open(argv[1], O_RDONLY);
     if (fd < 0)
         return (0);
-    map_data->temp = get_next_line(fd);
-    while (map_data->temp != NULL)
+    temp = get_next_line(fd);
+    while (temp != NULL)
     {
-        free(map_data->temp);
-        map_data->temp = get_next_line(fd);
+        free(temp);
+        temp = get_next_line(fd);
         map_data->lines++;
     }
     close(fd);
