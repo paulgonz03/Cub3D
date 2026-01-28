@@ -1,7 +1,7 @@
 #include "cube.h"
 #include "minilibx-linux/mlx.h"
 
-void paint_backgrown(t_map *map_data, t_mlx *mlx_data)
+void paint_background(t_map *map_data, t_mlx *mlx_data)
 {
 	int x;
 	int y;
@@ -29,6 +29,7 @@ void paint_backgrown(t_map *map_data, t_mlx *mlx_data)
 
 }
 
+
 int init_textures(t_files *files, t_mlx *mlx_data)
 {
 	int i;
@@ -49,5 +50,3 @@ int init_textures(t_files *files, t_mlx *mlx_data)
 	}
 	return (1);
 }
-
-

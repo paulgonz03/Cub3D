@@ -11,10 +11,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <math.h>
 
 #ifndef BUFFER_SIZE
 #define BUFFER_SIZE 42
 #endif
+
+#define MINIMAP_SIZE 12
+#define TILE_SIZE 15
+#define MINIMAP_OFFSET 20
 
 #define KEYA 97
 #define KEYS 115
@@ -61,18 +66,16 @@ typedef struct s_keys
 
 } t_keys;
 
-// typedef struct s_minimap
-// {
-//     void *mini_mlx;
-//     void *mini_win;
-//     void *mini_image[5];
-//     char *img_data;
-//     void *img;
-//     int bpp;         // bits per pixel
-//     int bpl;         // bits per line
-//     int order_bytes; // orden de bytes
+typedef struct s_minimap
+{
+    void *wall_img;
+    void *floor_img;
+    void *player_img;
+    void *void_img;
+    int img_width;
+    int img_height;
 
-// } t_minimap;
+} t_minimap;
 
 typedef struct s_mlx
 {
@@ -88,7 +91,8 @@ typedef struct s_mlx
     int img_width;
     int img_height;
     int plyr_angle;
-    // t_minimap *mini_map;
+    int mouse;
+    t_minimap *mini_map;
     t_keys *keys;
 } t_mlx;
 
@@ -96,8 +100,8 @@ typedef struct s_map
 {
     char **map;
     int lines;
-    int x_plyr;
-    int y_plyr;
+    float x_plyr;
+    float y_plyr;
     int x_limit;
     int y_limit;
     char view_player;
@@ -112,7 +116,7 @@ typedef struct s_map
 //##################################################
 
 // Minimap.c
-// int mini_map(t_map *map_data, t_minimap *mini_map);
+int mini_map(t_map *map_data, t_minimap *mini_map);
 
 //##################################################
 //##                 RAYCAST                      ##
@@ -129,7 +133,7 @@ int key_press(int keycode, t_mlx *mlx_data);
 int key_release(int keycode, t_mlx *mlx_data);
 
 //Textures.c
-void paint_backgrown(t_map *map_data, t_mlx *mlx_data);
+void paint_background(t_map *map_data, t_mlx *mlx_data);
 int init_textures(t_files *files, t_mlx *mlx_data);
 
 

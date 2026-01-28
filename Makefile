@@ -9,7 +9,7 @@ CC = cc
 SRC = cube.c free.c \
 ./gnl/map.c ./gnl/get_next_line.c ./gnl/get_next_line_utils.c \
 ./parser/flood_fill.c ./parser/parser.c ./parser/coordinates.c ./parser/utils_parser.c \
-./raycast/raycast.c ./raycast/keys.c ./raycast/textures.c\
+./raycast/raycast.c ./raycast/keys.c ./raycast/textures.c ./raycast/rays.c\
 ./bonus/minimap.c \
 
 OBJS = ${SRC:%.c=objects/%.o}

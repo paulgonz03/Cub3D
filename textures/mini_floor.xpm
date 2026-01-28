@@ -1,0 +1,21 @@
+/* floor_15x15.xpm */
+static char *floor_15x15[] = {
+"15 15 2 1",
+"F c #777777",
+". c #666666",
+"FFFFFFFFFFFFFFF",
+"F.F.F.F.F.F.F.F",
+"FFFFFFFFFFFFFFF",
+"F.F.F.F.F.F.F.F",
+"FFFFFFFFFFFFFFF",
+"F.F.F.F.F.F.F.F",
+"FFFFFFFFFFFFFFF",
+"F.F.F.F.F.F.F.F",
+"FFFFFFFFFFFFFFF",
+"F.F.F.F.F.F.F.F",
+"FFFFFFFFFFFFFFF",
+"F.F.F.F.F.F.F.F",
+"FFFFFFFFFFFFFFF",
+"F.F.F.F.F.F.F.F",
+"FFFFFFFFFFFFFFF"
+};

@@ -1,0 +1,21 @@
+/* wall_15x15.xpm */
+static char *wall_15x15[] = {
+"15 15 2 1",
+"X c #8B4513",
+". c #5A2E0C",
+"XXXXXXXXXXXXXXX",
+"X.....X.....X.",
+"X.....X.....X.",
+"XXXXXXXXXXXXXXX",
+".X.....X.....X",
+".X.....X.....X",
+"XXXXXXXXXXXXXXX",
+"X.....X.....X.",
+"X.....X.....X.",
+"XXXXXXXXXXXXXXX",
+".X.....X.....X",
+".X.....X.....X",
+"XXXXXXXXXXXXXXX",
+"X.....X.....X.",
+"XXXXXXXXXXXXXXX"
+};
