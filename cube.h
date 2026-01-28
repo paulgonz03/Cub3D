@@ -63,7 +63,8 @@ typedef struct s_keys
     int a;
     int s;
     int d;
-
+    int left;
+    int right;
 } t_keys;
 
 typedef struct s_minimap
@@ -124,6 +125,7 @@ int mini_map(t_map *map_data, t_minimap *mini_map);
 
 // Raycast.c
 void init_data(t_map *map_data);
+int	check_walls(t_mlx *mlx_data, float y, float x, t_map *map_data);
 int game_loop(void *data);
 int raycast(t_map *map_data);
 
@@ -131,6 +133,8 @@ int raycast(t_map *map_data);
 int closewin(t_mlx *mlx_data);
 int key_press(int keycode, t_mlx *mlx_data);
 int key_release(int keycode, t_mlx *mlx_data);
+void key_moves(t_map *map_data, t_mlx *mlx_data);
+int mouse(int x, int y, t_mlx *mlx_data);
 
 //Textures.c
 void paint_background(t_map *map_data, t_mlx *mlx_data);

@@ -39,57 +39,6 @@ int	check_walls(t_mlx *mlx_data, float y, float x, t_map *map_data)
 	(void)mlx_data;
 }
 
-void key_moves(t_map *map_data, t_mlx *mlx_data)
-{
-	float angle;
-	float fast;
-	float new_y;
-	float new_x;
-
-	angle = mlx_data->plyr_angle * 3.1415926535 / 180.0f;
-	fast = 0.08f;
-	if (mlx_data->keys->w == 1)
-	{
-		new_x = map_data->x_plyr + cos(angle) * fast;
-		new_y = map_data->y_plyr + sin(angle) * fast;
-		if (check_walls(mlx_data, new_y, new_x, map_data))
-		{
-			map_data->x_plyr = new_x;
-			map_data->y_plyr = new_y;
-		}
-	}
-	if (mlx_data->keys->s == 1)
-	{
-		new_x = map_data->x_plyr - cos(angle) * fast;
-		new_y = map_data->y_plyr - sin(angle) * fast;
-		if (check_walls(mlx_data, new_y, new_x, map_data))
-		{
-			map_data->x_plyr = new_x;
-			map_data->y_plyr = new_y;
-		}
-	}
-	if (mlx_data->keys->a == 1)
-	{
-		new_x = map_data->x_plyr - cos(angle + 3.1415926535 / 2) * fast;
-		new_y = map_data->y_plyr - sin(angle + 3.1415926535 / 2) * fast;
-		if (check_walls(mlx_data, new_y, new_x, map_data))
-		{
-			map_data->x_plyr = new_x;
-			map_data->y_plyr = new_y;
-		}
-	}
-	if (mlx_data->keys->d == 1)
-	{
-		new_x = map_data->x_plyr + cos(angle + 3.1415926535 / 2) * fast;
-		new_y = map_data->y_plyr + sin(angle + 3.1415926535 / 2) * fast;
-		if (check_walls(mlx_data, new_y, new_x, map_data))
-		{
-			map_data->x_plyr = new_x;
-			map_data->y_plyr = new_y;
-		}
-	}
-}
-
 int game_loop(void *data)
 {
 	t_map *map_data;
@@ -100,24 +49,6 @@ int game_loop(void *data)
 	mlx_put_image_to_window(map_data->mlx_data->mlx, map_data->mlx_data->win, map_data->mlx_data->img, 0, 0);
 	mini_map(map_data, map_data->mlx_data->mini_map);
 	return (1);
-}
-
-int mouse(int x, int y, t_mlx *mlx_data)
-{
-	float angle;
-
-	if (mlx_data->mouse != -1)
-	{
-		angle = (x - mlx_data->mouse) * 0.2f;
-		mlx_data->plyr_angle += angle;
-		if (mlx_data->plyr_angle < 0) // normalizar el angulo si es -
-			mlx_data->plyr_angle += 360.0f;
-		if (mlx_data->plyr_angle < 0) // normalizar el angulo si es mas de de 360
-			mlx_data->plyr_angle -= 360.0f;
-	}
-	mlx_data->mouse = x;
-	(void)y;
-	return(0);
 }
 
 int raycast(t_map *map_data)
