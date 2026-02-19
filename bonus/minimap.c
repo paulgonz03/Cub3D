@@ -36,10 +36,7 @@ static void	*create_tile_img(t_mlx *mlx_data, int size, int color)
 		x = 0;
 		while (x < size)
 		{
-			if (x == 0 || y == 0 || x == size - 1 || y == size - 1)
-				*(unsigned int *)(addr + (y * line_len + x * (bpp / 8))) = 0x202020;
-			else
-				*(unsigned int *)(addr + (y * line_len + x * (bpp / 8))) = color;
+			*(unsigned int *)(addr + (y * line_len + x * (bpp / 8))) = color;
 			x++;
 		}
 		y++;
@@ -47,188 +44,105 @@ static void	*create_tile_img(t_mlx *mlx_data, int size, int color)
 	return (img);
 }
 
-// Load or create minimap textures
+// Load minimap textures from ./textures/ folder
 static int	load_minimap_textures(t_map *map_data, t_minimap *mini_map)
 {
 	t_mlx	*mlx_data;
-	int		width;
-	int		height;
+	int		w;
+	int		h;
 
 	mlx_data = map_data->mlx_data;
-	width = TILE_SIZE;
-	height = TILE_SIZE;
-	
-	// Try to load textures from .xpm files, use colored fallback if they fail
-	mini_map->wall_img = mlx_xpm_file_to_image(mlx_data->mlx, 
-		"./textures/mini_wall.xpm", &width, &height);
+	w = TILE_SIZE;
+	h = TILE_SIZE;
+	mini_map->wall_img = mlx_xpm_file_to_image(mlx_data->mlx,
+			"./textures/mini_wall.xpm", &w, &h);
 	if (!mini_map->wall_img)
 		mini_map->wall_img = create_tile_img(mlx_data, TILE_SIZE, 0x505050);
-		
-	mini_map->floor_img = mlx_xpm_file_to_image(mlx_data->mlx, 
-		"./textures/mini_floor.xpm", &width, &height);
+	mini_map->floor_img = mlx_xpm_file_to_image(mlx_data->mlx,
+			"./textures/mini_floor.xpm", &w, &h);
 	if (!mini_map->floor_img)
 		mini_map->floor_img = create_tile_img(mlx_data, TILE_SIZE, 0xD3D3D3);
-		
-	mini_map->void_img = mlx_xpm_file_to_image(mlx_data->mlx, 
-		"./textures/mini_void.xpm", &width, &height);
+	mini_map->void_img = mlx_xpm_file_to_image(mlx_data->mlx,
+			"./textures/mini_void.xpm", &w, &h);
 	if (!mini_map->void_img)
 		mini_map->void_img = create_tile_img(mlx_data, TILE_SIZE, 0x1a1a1a);
-		
-	mini_map->player_img = mlx_xpm_file_to_image(mlx_data->mlx, 
-		"./textures/mini_player.xpm", &width, &height);
+	mini_map->player_img = mlx_xpm_file_to_image(mlx_data->mlx,
+			"./textures/mini_plyr.xpm", &w, &h);
 	if (!mini_map->player_img)
-		mini_map->player_img = create_tile_img(mlx_data, TILE_SIZE, 0xD3D3D3);
-	
-	mini_map->img_width = TILE_SIZE;
-	mini_map->img_height = TILE_SIZE;
-	
-	if (!mini_map->wall_img || !mini_map->floor_img || 
-		!mini_map->void_img || !mini_map->player_img)
+		mini_map->player_img = create_tile_img(mlx_data, TILE_SIZE, 0x00FF00);
+	if (!mini_map->wall_img || !mini_map->floor_img
+		|| !mini_map->void_img || !mini_map->player_img)
 		return (0);
 	return (1);
 }
 
-// Draw minecraft-style wooden border
-static void	draw_border(t_mlx *mlx_data, int size, int tile_size)
+// Draw player indicator with direction arrow
+static void	draw_player(t_mlx *mlx_data, int cx, int cy, float angle)
 {
-	int	i;
-	int	max;
-	int	t;
-	int	color;
-	int	pattern;
+	int		px;
+	int		py;
+	int		r;
+	float	rad;
+	int		i;
 
-	max = size * tile_size;
-	i = 0;
-	while (i < max)
+	r = TILE_SIZE / 3;
+	py = -r;
+	while (py <= r)
 	{
-		t = 0;
-		while (t < 6)
+		px = -r;
+		while (px <= r)
 		{
-			// Create wood grain pattern
-			pattern = (i / 4 + t) % 3;
-			
-			if (t == 0 || t == 5)
-				color = 0x4A2511; // Dark brown border
-			else if (pattern == 0)
-				color = 0x8B4513; // Saddle brown
-			else if (pattern == 1)
-				color = 0xA0522D; // Sienna
-			else
-				color = 0x6B3410; // Medium brown
-			
-			// Top border
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win, 
-				i + MINIMAP_OFFSET, t + MINIMAP_OFFSET, color);
-			// Bottom border
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win, 
-				i + MINIMAP_OFFSET, max - 1 - t + MINIMAP_OFFSET, color);
-			// Left border
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win, 
-				t + MINIMAP_OFFSET, i + MINIMAP_OFFSET, color);
-			// Right border
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win, 
-				max - 1 - t + MINIMAP_OFFSET, i + MINIMAP_OFFSET, color);
-			t++;
-		}
-		i++;
-	}
-	
-	// Add corner decorations (darker)
-	int corner_size = 6;
-	int cx, cy;
-	for (cy = 0; cy < corner_size; cy++)
-	{
-		for (cx = 0; cx < corner_size; cx++)
-		{
-			color = 0x3D1F0F; // Very dark brown for corners
-			// Top-left corner
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-				cx + MINIMAP_OFFSET, cy + MINIMAP_OFFSET, color);
-			// Top-right corner
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-				max - 1 - cx + MINIMAP_OFFSET, cy + MINIMAP_OFFSET, color);
-			// Bottom-left corner
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-				cx + MINIMAP_OFFSET, max - 1 - cy + MINIMAP_OFFSET, color);
-			// Bottom-right corner
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-				max - 1 - cx + MINIMAP_OFFSET, max - 1 - cy + MINIMAP_OFFSET, color);
-		}
-	}
-}
-
-// Draw simple player indicator at center
-static void	draw_player(t_mlx *mlx_data, int center_x, int center_y, float angle)
-{
-	int	px, py, radius, i;
-	float angle_rad, dir_x, dir_y;
-	int arrow_len, arrow_x, arrow_y;
-
-	// Draw green circle
-	radius = TILE_SIZE / 3;
-	py = -radius;
-	while (py <= radius)
-	{
-		px = -radius;
-		while (px <= radius)
-		{
-			if (px * px + py * py <= radius * radius)
+			if (px * px + py * py <= r * r)
 				mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-					center_x + px, center_y + py, 0x00FF00);
+					cx + px, cy + py, 0x00FF00);
 			px++;
 		}
 		py++;
 	}
-	
-	// Draw red direction arrow (wider)
-	angle_rad = angle * 3.14159265359 / 180.0;
-	dir_x = cos(angle_rad);
-	dir_y = sin(angle_rad);
-	arrow_len = TILE_SIZE / 2;
+	rad = angle * 3.14159265359 / 180.0;
 	i = 0;
-	while (i < arrow_len)
+	while (i < TILE_SIZE * 2 / 3)
 	{
-		arrow_x = (int)(dir_x * i);
-		arrow_y = (int)(dir_y * i);
-		// Draw thicker arrow
 		mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-			center_x + arrow_x, center_y + arrow_y, 0xFF0000);
+			cx + (int)(cos(rad) * i), cy + (int)(sin(rad) * i), 0xFF0000);
 		mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-			center_x + arrow_x + 1, center_y + arrow_y, 0xFF0000);
+			cx + (int)(cos(rad) * i) + 1, cy + (int)(sin(rad) * i), 0xFF0000);
 		mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-			center_x + arrow_x - 1, center_y + arrow_y, 0xFF0000);
+			cx + (int)(cos(rad) * i), cy + (int)(sin(rad) * i) + 1, 0xFF0000);
 		mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-			center_x + arrow_x, center_y + arrow_y + 1, 0xFF0000);
+			cx + (int)(cos(rad) * i) - 1, cy + (int)(sin(rad) * i), 0xFF0000);
 		mlx_pixel_put(mlx_data->mlx, mlx_data->win,
-			center_x + arrow_x, center_y + arrow_y - 1, 0xFF0000);
+			cx + (int)(cos(rad) * i), cy + (int)(sin(rad) * i) - 1, 0xFF0000);
 		i++;
 	}
 }
 
 int	mini_map(t_map *map_data, t_minimap *mini_map)
 {
-	t_mlx	*mlx_data;
-	int		x, y, map_x, map_y, tile;
-	void	*img;
-	static int loaded = 0;
-	int		center_x, center_y;
+	t_mlx		*mlx_data;
+	int			x;
+	int			y;
+	int			tile;
+	void		*img;
+	static int	loaded = 0;
+	float		off_x;
+	float		off_y;
 
 	mlx_data = map_data->mlx_data;
 	if (!loaded && !load_minimap_textures(map_data, mini_map))
 		return (0);
 	loaded = 1;
-	
-	// Draw map tiles around player
+	off_x = map_data->x_plyr - (int)map_data->x_plyr;
+	off_y = map_data->y_plyr - (int)map_data->y_plyr;
 	y = -1;
-	while (++y < MINIMAP_SIZE)
+	while (++y <= MINIMAP_SIZE)
 	{
 		x = -1;
-		while (++x < MINIMAP_SIZE)
+		while (++x <= MINIMAP_SIZE)
 		{
-			map_x = (int)map_data->x_plyr + (x - MINIMAP_SIZE / 2);
-			map_y = (int)map_data->y_plyr + (y - MINIMAP_SIZE / 2);
-			tile = get_map_tile(map_data, map_x, map_y);
-			
+			tile = get_map_tile(map_data, (int)map_data->x_plyr + x
+					- MINIMAP_SIZE / 2, (int)map_data->y_plyr + y
+					- MINIMAP_SIZE / 2);
 			if (tile == '1')
 				img = mini_map->wall_img;
 			else if (tile == '0' || tile == 'N' || tile == 'S'
@@ -236,17 +150,13 @@ int	mini_map(t_map *map_data, t_minimap *mini_map)
 				img = mini_map->floor_img;
 			else
 				img = mini_map->void_img;
-			
 			mlx_put_image_to_window(mlx_data->mlx, mlx_data->win, img,
-				x * TILE_SIZE + MINIMAP_OFFSET, y * TILE_SIZE + MINIMAP_OFFSET);
+				x * TILE_SIZE + MINIMAP_OFFSET - (int)(off_x * TILE_SIZE),
+				y * TILE_SIZE + MINIMAP_OFFSET - (int)(off_y * TILE_SIZE));
 		}
 	}
-	
-	// Draw player at center
-	center_x = (MINIMAP_SIZE / 2) * TILE_SIZE + MINIMAP_OFFSET + TILE_SIZE / 2;
-	center_y = (MINIMAP_SIZE / 2) * TILE_SIZE + MINIMAP_OFFSET + TILE_SIZE / 2;
-	draw_player(mlx_data, center_x, center_y, mlx_data->plyr_angle);
-	
-	draw_border(mlx_data, MINIMAP_SIZE, TILE_SIZE);
+	draw_player(mlx_data, MINIMAP_OFFSET + (MINIMAP_SIZE * TILE_SIZE) / 2,
+		MINIMAP_OFFSET + (MINIMAP_SIZE * TILE_SIZE) / 2, mlx_data->plyr_angle);
 	return (1);
 }
+

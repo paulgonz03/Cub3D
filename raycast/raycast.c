@@ -20,20 +20,31 @@ void init_data(t_map *map_data)
 	map_data->mlx_data->win = mlx_new_window(map_data->mlx_data->mlx, 1080, 720, "Cub3D");
 }
 
+static int	is_wall(t_map *map_data, int map_y, int map_x)
+{
+	if (map_y < 0 || map_y >= map_data->lines)
+		return (1);
+	if (map_x < 0 || !map_data->map[map_y])
+		return (1);
+	if (map_x >= (int)ft_strlen(map_data->map[map_y]))
+		return (1);
+	if (map_data->map[map_y][map_x] == '1' || map_data->map[map_y][map_x] == ' ')
+		return (1);
+	return (0);
+}
+
 int	check_walls(t_mlx *mlx_data, float y, float x, t_map *map_data)
 {
-	int map_y;
-	int map_x;
+	float m;
 
-	map_y = (int)y;
-	map_x = (int)x;
-	if (map_y < 0 || map_y >= map_data->lines)
+	m = 0.2f;
+	if (is_wall(map_data, (int)(y - m), (int)(x - m)))
 		return (0);
-	if (map_x < 0 || !map_data->map[map_y])
+	if (is_wall(map_data, (int)(y - m), (int)(x + m)))
 		return (0);
-	if (map_x >= (int)ft_strlen(map_data->map[map_y]))
+	if (is_wall(map_data, (int)(y + m), (int)(x - m)))
 		return (0);
-	if (map_data->map[map_y][map_x] == '1' || map_data->map[map_y][map_x] == ' ')
+	if (is_wall(map_data, (int)(y + m), (int)(x + m)))
 		return (0);
 	return (1);
 	(void)mlx_data;
