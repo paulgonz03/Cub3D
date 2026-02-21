@@ -2,14 +2,6 @@
 #include "minilibx-linux/mlx.h"
 #include <math.h>
 
-typedef struct s_hit
-{
-    float   x;
-    float   y;
-    float   dist;
-    int     vertical;
-}   t_hit;
-
 static float    deg_to_rad(float a)
 {
     return (a * PI / 180.0f);
@@ -77,6 +69,7 @@ static int is_inside_map(t_map *map, int y, int x)
         return (0);
     return (1);
 }
+
 static void vertical_hit(t_map *map, float rad, t_hit *v)
 {
     float xa;
@@ -105,12 +98,6 @@ static void vertical_hit(t_map *map, float rad, t_hit *v)
     v->dist = hypotf(x - map->x_plyr, y - map->y_plyr);
     v->vertical = 1;
 }
-
-
-
-/* ------------------------------------------------------------ */
-/*   CAST RAY (DDA REAL)                                         */
-/* ------------------------------------------------------------ */
 
 static void cast_single_ray(t_map *map, t_mlx *mlx, int col, t_ray *ray)
 {
@@ -141,10 +128,6 @@ static void cast_single_ray(t_map *map, t_mlx *mlx, int col, t_ray *ray)
     }
 }
 
-/* ------------------------------------------------------------ */
-/*   TEXTURE SELECTION                                           */
-/* ------------------------------------------------------------ */
-
 static int  select_texture(t_ray *ray)
 {
     float   rad;
@@ -154,10 +137,6 @@ static int  select_texture(t_ray *ray)
         return (cos(rad) > 0 ? EA : WE);
     return (sin(rad) > 0 ? SO : NO);
 }
-
-/* ------------------------------------------------------------ */
-/*   TEXTURE COORDS                                              */
-/* ------------------------------------------------------------ */
 
 static int  get_tex_x(t_ray *ray, t_mlx *mlx, int id)
 {
@@ -189,10 +168,6 @@ static int  get_tex_y(int y, int start, int end, int tex_h)
         ty = tex_h - 1;
     return (ty);
 }
-
-/* ------------------------------------------------------------ */
-/*   DRAW WALL COLUMN                                            */
-/* ------------------------------------------------------------ */
 
 static void draw_wall_column(t_mlx *mlx, int col, t_ray *ray)
 {
@@ -229,17 +204,13 @@ static void draw_wall_column(t_mlx *mlx, int col, t_ray *ray)
     }
 }
 
-/* ------------------------------------------------------------ */
-/*   MAIN RAY LOOP                                               */
-/* ------------------------------------------------------------ */
-
 void    rays(t_map *map, t_mlx *mlx)
 {
     int     col;
     t_ray   ray;
 
     col = 0;
-    while (col < 1080)
+    while (col < WIDTH)
     {
         ft_bzero(&ray, sizeof(t_ray));
         cast_single_ray(map, mlx, col, &ray);

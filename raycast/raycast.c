@@ -86,17 +86,12 @@ int raycast(t_map *map_data)
     	printf("Error: mlx_init failed\n");
     	exit(1);
 	}
-
-
     init_data(map_data);
-
-    mlx_hook(map_data->mlx_data->win, 2, 1L << 0, key_press, map_data->mlx_data);   // KeyPress
-    mlx_hook(map_data->mlx_data->win, 3, 1L << 1, key_release, map_data->mlx_data); // KeyRelease
-    mlx_hook(map_data->mlx_data->win, 6, 1L << 6, mouse, map_data->mlx_data);       // Mouse move
-
+    mlx_hook(map_data->mlx_data->win, 2, 1L << 0, key_press, map_data->mlx_data);
+    mlx_hook(map_data->mlx_data->win, 3, 1L << 1, key_release, map_data->mlx_data);
+    mlx_hook(map_data->mlx_data->win, 6, 1L << 6, mouse, map_data->mlx_data);
     mlx_loop_hook(map_data->mlx_data->mlx, game_loop, map_data);
     mlx_hook(map_data->mlx_data->win, CLOSEWIN, 0, closewin, map_data->mlx_data);
-
     mlx_loop(map_data->mlx_data->mlx);
     return (1);
 }

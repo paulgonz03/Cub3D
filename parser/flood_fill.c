@@ -3,22 +3,19 @@
 char **copy_map(t_map *map_data)
 {
     int j;
-    int i;
     char **temp;
 
     j = 0;
-    i = 0;
     while (map_data->map[j])
         j++;
     temp = ft_calloc(j + 1, sizeof(char *));
     j = 0;
     while (map_data->map[j])
     {
-        temp[i] = ft_strdup(map_data->map[j]);
-        i++;
+        temp[j] = ft_strdup(map_data->map[j]);
         j++;
     }
-    temp[i] = '\0';
+    temp[j] = NULL;
     return (temp);
 }
 
@@ -61,7 +58,7 @@ void limits_map(t_map *map_data)
     while (map_data->map[map_data->y_limit])
         map_data->y_limit++;
     len = ft_strlen(map_data->map[j]);
-    while (map_data->map[j] && ft_strlen(map_data->map[j]) > len)
+    while (map_data->map[j] && ft_strlen(map_data->map[j]) > (size_t)len)
     {
         len = ft_strlen(map_data->map[j]);
         j++;

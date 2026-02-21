@@ -79,8 +79,8 @@ void key_moves(t_map *map_data, t_mlx *mlx_data)
 	}
 	if (mlx_data->keys->a == 1)
 	{
-		new_x = map_data->x_plyr - cos(angle + 3.1415926535 / 2) * fast;
-		new_y = map_data->y_plyr - sin(angle + 3.1415926535 / 2) * fast;
+		new_x = map_data->x_plyr - cos(angle + PI / 2) * fast;
+		new_y = map_data->y_plyr - sin(angle + PI / 2) * fast;
 		if (check_walls(mlx_data, new_y, new_x, map_data))
 		{
 			map_data->x_plyr = new_x;
@@ -89,8 +89,8 @@ void key_moves(t_map *map_data, t_mlx *mlx_data)
 	}
 	if (mlx_data->keys->d == 1)
 	{
-		new_x = map_data->x_plyr + cos(angle + 3.1415926535 / 2) * fast;
-		new_y = map_data->y_plyr + sin(angle + 3.1415926535 / 2) * fast;
+		new_x = map_data->x_plyr + cos(angle + PI / 2) * fast;
+		new_y = map_data->y_plyr + sin(angle + PI / 2) * fast;
 		if (check_walls(mlx_data, new_y, new_x, map_data))
 		{
 			map_data->x_plyr = new_x;
@@ -111,19 +111,16 @@ void key_moves(t_map *map_data, t_mlx *mlx_data)
 	}	
 }
 
-// 
+// Hay que reparar el giro con el raton, no se que pasa
 int mouse(int x, int y, t_mlx *mlx)
 {
     float delta;
 
-    // Primera vez: solo guardamos la posición
     if (mlx->mouse == -1)
     {
         mlx->mouse = x;
         return (0);
     }
-
-    // Movimiento relativo del ratón
     	delta = x - mlx->mouse;
 	
 		if (delta < 1)
@@ -138,12 +135,8 @@ int mouse(int x, int y, t_mlx *mlx)
 			if (mlx->plyr_angle >= 360.0f)
 				mlx->plyr_angle -= 360.0f;
 		}
-
-    // Guardar posición actual
     mlx->mouse = x;
 
     (void)y;
     return (0);
 }
-
-

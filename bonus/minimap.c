@@ -99,7 +99,7 @@ static void	draw_player(t_mlx *mlx_data, int cx, int cy, float angle)
 		}
 		py++;
 	}
-	rad = angle * 3.14159265359 / 180.0;
+	rad = angle * PI / 180.0;
 	i = 0;
 	while (i < TILE_SIZE * 2 / 3)
 	{

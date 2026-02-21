@@ -157,6 +157,14 @@ typedef struct s_wall
     float wall_h;
 }   t_wall;
 
+typedef struct s_hit
+{
+    float   x;
+    float   y;
+    float   dist;
+    int     vertical;
+}   t_hit;
+
 //rays.c
 void put_pixel(t_mlx *mlx, int x, int y, int color);
 // Raycast.c

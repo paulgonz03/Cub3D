@@ -10,8 +10,6 @@ int realloc_map(t_map *map_data, int pos)
 
     while (map_data->map[lines])
         lines++;
-
-    // +1 para el NULL final
     new_map = ft_calloc(lines + 1, sizeof(char *));
     if (!new_map)
         return (0);
@@ -36,15 +34,10 @@ int realloc_map(t_map *map_data, int pos)
         new_map[i++] = ft_strdup(map_data->map[j]);
         j++;
     }
-
     new_map[i] = NULL;
-
     ft_free_free(map_data->map);
     map_data->map = new_map;
-
-    // 🔥 MUY IMPORTANTE
     map_data->lines = i;
-
     return (1);
 }
 
