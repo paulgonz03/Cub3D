@@ -45,6 +45,15 @@ enum
     TOTAL
 };
 
+typedef struct s_realloc
+{
+    char **new_map;
+    int j;
+    int i;
+    int lines;
+    int newline;
+} t_realloc;
+
 typedef struct s_files
 {
     char *no_file;

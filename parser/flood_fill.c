@@ -58,7 +58,7 @@ void limits_map(t_map *map_data)
     while (map_data->map[map_data->y_limit])
         map_data->y_limit++;
     len = ft_strlen(map_data->map[j]);
-    while (map_data->map[j] && ft_strlen(map_data->map[j]) > (size_t)len)
+    while (map_data->map[j] && ft_strlen(map_data->map[j]) > len)
     {
         len = ft_strlen(map_data->map[j]);
         j++;

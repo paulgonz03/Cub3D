@@ -48,7 +48,10 @@ void free_mapdata(t_map *map_data)
     if (map_data->map)
         ft_free_free(map_data->map);
     if (map_data->files)
+    {
         free_files(map_data->files);
+        free(map_data->files);
+    }
     if (map_data->mlx_data)
         free_mlx(map_data->mlx_data);
 }
