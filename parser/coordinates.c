@@ -73,11 +73,10 @@ int	aux_coordinates_parser(t_map *map_data, char *coords[6], int j, int i)
 	return (1);
 }
 
-int	coordinates_parser(t_map *map_data)
+int	coordinates_parser(t_map *map_data, char **coords)
 {
-	int		i;
-	int		j;
-	char	*coords[6];
+	int	i;
+	int	j;
 
 	coords[0] = "NO";
 	coords[1] = "SO";
