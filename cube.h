@@ -141,6 +141,13 @@ typedef struct s_map
 //##                  BONUS                       ##
 //##################################################
 
+// Aux_minimap.c
+void	*create_tile_img(t_mlx *mlx_data, int size, int color);
+void	*load_texture(t_mlx *mlx, char *path, int color);
+int		load_minimap_textures(t_map *map_data, t_minimap *mini_map);
+void	draw_circle(t_mlx *mlx, int cx, int cy);
+void	draw_direction(t_mlx *mlx, int cx, int cy, float angle);
+
 // Minimap.c
 int mini_map(t_map *map_data, t_minimap *mini_map);
 
@@ -255,7 +262,7 @@ int get_map(char **argv, t_map *map_data);
 
 // Coordinates.c
 int realloc_map(t_map *map_data, int pos);
-int coordinates_parser(t_map *map_data);
+int coordinates_parser(t_map *map_data, char **coords);
 
 // Flood_fill.c
 char **copy_map(t_map *map_data);
