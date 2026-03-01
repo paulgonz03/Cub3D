@@ -32,6 +32,8 @@ void init_data(t_map *map_data)
 		printf("Error: mlx_new_window failed\n");
 		exit(1);
 	}
+	map_data->sprite = NULL;
+	load_torches_from_map(map_data, map_data->mlx_data);
 }
 
 static int is_wall(t_map *map_data, int map_y, int map_x)
@@ -70,25 +72,43 @@ int	check_walls(t_mlx *mlx_data, float y, float x, t_map *map_data)
 	return (1);
 	(void)mlx_data;
 }
-
 int game_loop(void *data)
 {
-	t_map *map_data;
-	static long last_frame = 0;
-	long now = get_time_ms(); // 60 FPS → 16 ms por frame
+    t_map   *map;
+    t_mlx   *mlx;
+    static long last_frame = 0;
+    long now = get_time_ms();
 
-	if (now - last_frame < 16)
-		return (0);
-	last_frame = now;
-	map_data = data;
-	key_moves(map_data, map_data->mlx_data);
-	apply_mouse_rotation(map_data->mlx_data);
-	paint_background(map_data, map_data->mlx_data);
-	rays(map_data, map_data->mlx_data);
-	mlx_put_image_to_window(map_data->mlx_data->mlx, map_data->mlx_data->win, map_data->mlx_data->img, 0, 0);
-	mini_map(map_data, map_data->mlx_data->mini_map);
-	return (1);
+    if (now - last_frame < 16)   // ~60 FPS
+        return (0);
+    last_frame = now;
+
+    map = data;
+    mlx = map->mlx_data;
+
+    key_moves(map, mlx);
+    apply_mouse_rotation(mlx);
+
+    paint_background(map, mlx);
+
+    // raycasting + z-buffer
+    rays(map, mlx);
+
+    // sprites
+    t_sprite *sp = map->sprite;
+    while (sp)
+    {
+        update_sprite_animation(sp, 0.016f);
+        draw_sprite(mlx, map, sp, map->zbuffer);
+        sp = sp->next;
+    }
+
+    mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
+    mini_map(map, mlx->mini_map);
+
+    return (1);
 }
+
 
 int raycast(t_map *map_data)
 {

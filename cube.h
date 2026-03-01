@@ -36,6 +36,7 @@
 #define HALF_H (HEIGHT / 2)
 #define PI 3.14159265358979323846
 
+typedef struct s_sprite t_sprite;
 enum
 {
     NO = 0,
@@ -134,6 +135,8 @@ typedef struct s_map
     char type;
     t_files *files;
     t_mlx *mlx_data;
+    t_sprite *sprite;
+    float zbuffer[WIDTH];
 } t_map;
 
 
@@ -188,7 +191,6 @@ void init_data(t_map *map_data);
 int	check_walls(t_mlx *mlx_data, float y, float x, t_map *map_data);
 int game_loop(void *data);
 int raycast(t_map *map_data);
-void rays(t_map *map_data, t_mlx *mlx_data);
 
 // Keys.c
 void apply_mouse_rotation(t_mlx *mlx);
@@ -205,24 +207,31 @@ int init_textures(t_files *files, t_mlx *mlx_data);
 //##################################################
 //##              ANIMATED-SPRITE                 ##
 //##################################################
+
 typedef struct s_sprite
 {
     float x;
     float y;
+    float normal_x;
+    float normal_y;
 
-    int frame_count;        // número de frames
-    int current_frame;      // frame actual
-    float anim_speed;       // tiempo entre frames
-    float anim_timer;       // acumulador
+    int frame_count;
+    int current_frame;
+    float anim_speed;
+    float anim_timer;
 
-    int **frames;           // array de texturas [frame][pixel]
-    int *frame_width;       // ancho por frame
-    int *frame_height;      // alto por frame
+    int **frames;
+    int *frame_width;
+    int *frame_height;
+
+    struct s_sprite *next;
 } t_sprite;
 
-void draw_sprite(t_mlx *mlx, t_map *map, t_sprite *sp);
+void rays(t_map *map, t_mlx *mlx);
+void draw_sprite(t_mlx *mlx, t_map *map, t_sprite *sp, float *zbuffer);
 void load_fire_sprite(t_mlx *mlx, t_sprite *sp);
 void update_sprite_animation(t_sprite *sp, float dt);
+void load_torches_from_map(t_map *map, t_mlx *mlx);
 //##################################################
 //##                   CUBE                       ##
 //##################################################

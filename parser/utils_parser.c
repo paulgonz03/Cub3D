@@ -24,7 +24,7 @@ int	char_not_allow(char **map)
 		while (map[j][++i])
 		{
 			if (!(map[j][i] == '1' || map[j][i] == '0' || map[j][i] == 'N'
-					|| map[j][i] == 'S' || map[j][i] == 'O' || map[j][i] == 'E'
+					|| map[j][i] == 'S' || map[j][i] == 'O' || map[j][i] == 'E'|| map[j][i] == 'T'
 					|| map[j][i] == '\n' || map[j][i] == 32))
 			{
 				printf("Error: char invalid in map\n");

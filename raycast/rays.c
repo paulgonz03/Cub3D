@@ -11,11 +11,10 @@ int apply_shading(int color, float dist)
     float shade;
     int r, g, b;
 
-    // factor de sombreado (ajustable)
     shade = 1.0f / (1.0f + dist * 0.1f);
 
     if (shade < 0.2f)
-        shade = 0.2f; // evita que quede totalmente negro
+        shade = 0.2f;
 
     r = ((color >> 16) & 0xFF) * shade;
     g = ((color >> 8) & 0xFF) * shade;
@@ -135,7 +134,6 @@ while (y < draw_end)
 tex_y = get_tex_y(y, draw_start_real, line_h, mlx->tex_height[id]);
 color = mlx->texture_data[id][tex_y * mlx->tex_width[id] + tex_x];
 
-// ⭐ APLICAR SHADER POR DISTANCIA AQUÍ ⭐
 color = apply_shading(color, perp_dist);
 
 put_pixel(mlx, col, y, color);
@@ -146,6 +144,9 @@ y++;
 
 /* ---------------------- RAYO + DDA -------------------------- */
 
+// ---------------------- RAYO + DDA --------------------------
+
+// ray de UNA columna
 static void cast_ray(t_map *map, t_mlx *mlx, int col)
 {
     float   ray_angle_deg;
@@ -232,7 +233,10 @@ static void cast_ray(t_map *map, t_mlx *mlx, int col)
     player_rad = deg_to_rad((float)mlx->plyr_angle);
     perp_dist = dist * cosf(rad - player_rad);
 
-    /* ⭐ CORRECCIÓN FINAL: wall_x usa dist (distancia REAL) */
+    // Z-BUFFER: guardar distancia perpendicular
+    map->zbuffer[col] = perp_dist;
+
+    // wall_x con dist real
     if (side == 0)
         wall_x = map->y_plyr + dist * ray_dir_y;
     else
@@ -243,7 +247,8 @@ static void cast_ray(t_map *map, t_mlx *mlx, int col)
     draw_column(mlx, col, side, perp_dist, ray_dir_x, ray_dir_y, wall_x);
 }
 
-void    rays(t_map *map, t_mlx *mlx)
+// bucle de TODAS las columnas
+void rays(t_map *map, t_mlx *mlx)
 {
     int col;
 
