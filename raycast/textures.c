@@ -66,12 +66,12 @@ void    paint_background(t_map *map_data, t_mlx *mlx_data)
         | map_data->files->c_col_b;
 
     y = 0;
-    while (y < 720)
+    while (y < HEIGHT)
     {
         x = 0;
-        while (x < 1080)
+        while (x < WIDTH)
         {
-            if (y < 360)
+            if (y < HALF_H)
                 put_pixel(mlx_data, x, y, color_ceiling);
             else
                 put_pixel(mlx_data, x, y, color_floor);

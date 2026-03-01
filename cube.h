@@ -184,6 +184,7 @@ int raycast(t_map *map_data);
 void rays(t_map *map_data, t_mlx *mlx_data);
 
 // Keys.c
+void apply_mouse_rotation(t_mlx *mlx);
 int closewin(t_mlx *mlx_data);
 int key_press(int keycode, t_mlx *mlx_data);
 int key_release(int keycode, t_mlx *mlx_data);
@@ -194,7 +195,27 @@ int mouse(int x, int y, t_mlx *mlx_data);
 void paint_background(t_map *map_data, t_mlx *mlx_data);
 int init_textures(t_files *files, t_mlx *mlx_data);
 
+//##################################################
+//##              ANIMATED-SPRITE                 ##
+//##################################################
+typedef struct s_sprite
+{
+    float x;
+    float y;
 
+    int frame_count;        // número de frames
+    int current_frame;      // frame actual
+    float anim_speed;       // tiempo entre frames
+    float anim_timer;       // acumulador
+
+    int **frames;           // array de texturas [frame][pixel]
+    int *frame_width;       // ancho por frame
+    int *frame_height;      // alto por frame
+} t_sprite;
+
+void draw_sprite(t_mlx *mlx, t_map *map, t_sprite *sp);
+void load_fire_sprite(t_mlx *mlx, t_sprite *sp);
+void update_sprite_animation(t_sprite *sp, float dt);
 //##################################################
 //##                   CUBE                       ##
 //##################################################

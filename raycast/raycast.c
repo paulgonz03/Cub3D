@@ -1,5 +1,14 @@
 #include "cube.h"
 #include "minilibx-linux/mlx.h"
+#include <sys/time.h>
+
+long    get_time_ms(void)
+{
+    struct timeval  tv;
+
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
 
 void init_data(t_map *map_data)
 {
@@ -65,9 +74,15 @@ int	check_walls(t_mlx *mlx_data, float y, float x, t_map *map_data)
 int game_loop(void *data)
 {
 	t_map *map_data;
+	static long last_frame = 0;
+	long now = get_time_ms(); // 60 FPS → 16 ms por frame
 
+	if (now - last_frame < 16)
+		return (0);
+	last_frame = now;
 	map_data = data;
 	key_moves(map_data, map_data->mlx_data);
+	apply_mouse_rotation(map_data->mlx_data);
 	paint_background(map_data, map_data->mlx_data);
 	rays(map_data, map_data->mlx_data);
 	mlx_put_image_to_window(map_data->mlx_data->mlx, map_data->mlx_data->win, map_data->mlx_data->img, 0, 0);
