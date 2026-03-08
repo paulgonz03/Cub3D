@@ -105,7 +105,6 @@ int	flood_fill(t_map *map_data)
 			temp))
 	{
 		ft_free_free(temp);
-		printf("Error: open map\n");
 		return (0);
 	}
 	ft_free_free(temp);

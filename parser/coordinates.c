@@ -2,8 +2,8 @@
 
 int	process_line(t_realloc *data, t_map *map_data, int pos)
 {
-	if(!map_data->map)
-		return(0);
+	if (!map_data->map)
+		return (0);
 	if (data->j == pos)
 	{
 		if (map_data->map[data->j + 1] && map_data->map[data->j + 1][0] == '\n')
@@ -96,7 +96,7 @@ int	coordinates_parser(t_map *map_data, char **coords)
 		if (map_data->map[i][0] == '\n')
 		{
 			i++;
-			continue ; 	
+			continue ;
 		}
 		j = -1;
 		matched = 0;

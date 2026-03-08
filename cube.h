@@ -240,6 +240,7 @@ void printmap(char **map);
 //##################################################
 //##                   FREE                       ##
 //##################################################
+void ft_free_free(char **temp);
 int error(t_map *map_data, char *mes);
 void free_files(t_files *files);
 void free_mlx(t_mlx *mlx);
@@ -284,10 +285,8 @@ int flood_fill(t_map *map_data);
 int parser(t_map *map_data);
 
 // Utils_parser.c
-void ft_free_free(char **temp);
 int char_not_allow(char **map);
 int name_map_parser(char **argv);
-static int	is_valid_rgb_value(char *s);
 int	validate_rgb_split(char **rgb);
 int sky_floor(t_map *map_data);
 int tab_parser(char **map);

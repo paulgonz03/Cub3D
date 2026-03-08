@@ -1,11 +1,22 @@
 #include "cube.h"
 
+void	ft_free_free(char **temp)
+{
+	int	j;
+
+	j = -1;
+	while (temp[++j])
+		free(temp[j]);
+	free(temp);
+}
+
 int error(t_map *map_data, char *mes)
 {
     printf("%s\n", mes);
     free_mapdata(map_data);
     return(0);
 }
+
 void free_files(t_files *files)
 {
     if (files->c_file)
