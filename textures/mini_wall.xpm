@@ -1,5 +1,5 @@
-/* wall_15x15.xpm */
-static char *wall_15x15[] = {
+/* north5x15.xpm */
+static char *north5x15[] = {
 "15 15 2 1",
 "X c #8B4513",
 ". c #5A2E0C",
