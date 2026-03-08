@@ -2,9 +2,11 @@
 
 int	process_line(t_realloc *data, t_map *map_data, int pos)
 {
+	if(!map_data->map)
+		return(0);
 	if (data->j == pos)
 	{
-		if (map_data->map[data->j + 1][0] == '\n')
+		if (map_data->map[data->j + 1] && map_data->map[data->j + 1][0] == '\n')
 		{
 			data->j++;
 			data->newline++;
@@ -35,8 +37,7 @@ int	realloc_map(t_map *map_data, int pos)
 	{
 		result = process_line(data, map_data, pos);
 		if (result == 0)
-			return (free(data->new_map), free(data),
-				printf("Error: more newlines\n"), 0);
+			return (free(data->new_map), free(data), 0);
 		if (result == 1)
 			continue ;
 	}
@@ -77,6 +78,9 @@ int	coordinates_parser(t_map *map_data, char **coords)
 {
 	int	i;
 	int	j;
+	int	matched;
+	int	total_found;
+	int	found[6];
 
 	coords[0] = "NO";
 	coords[1] = "SO";
@@ -84,20 +88,33 @@ int	coordinates_parser(t_map *map_data, char **coords)
 	coords[3] = "EA";
 	coords[4] = "F";
 	coords[5] = "C";
+	ft_bzero(found, sizeof(found));
+	total_found = 0;
 	i = 0;
-	j = -1;
-	while (map_data->map[i] && ++j < 6)
+	while (map_data->map[i] && total_found < 6)
 	{
 		if (map_data->map[i][0] == '\n')
-			i++;
-		else if (ft_strncmp(map_data->map[i], coords[j],
-				ft_strlen(coords[j])) == 0)
 		{
-			if (!aux_coordinates_parser(map_data, coords, j, i))
-				return (0);
+			i++;
+			continue ; 	
 		}
-		else
-			return (0);
+		j = -1;
+		matched = 0;
+		while (++j < 6)
+		{
+			if (!found[j] && ft_strncmp(map_data->map[i], coords[j],
+					ft_strlen(coords[j])) == 0)
+			{
+				if (!aux_coordinates_parser(map_data, coords, j, i))
+					return (0);
+				found[j] = 1;
+				total_found++;
+				matched = 1;
+				break ;
+			}
+		}
+		if (!matched)
+			break ;
 	}
-	return (j == 6);
+	return (total_found == 6);
 }

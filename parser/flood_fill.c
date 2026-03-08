@@ -19,32 +19,36 @@ char	**copy_map(t_map *map_data)
 	return (temp);
 }
 
-void	find_player(t_map *map_data)
+int	find_player(t_map *map_data)
 {
 	int	y;
 	int	x;
+	int	count;
 
 	y = 0;
+	count = 0;
 	while (map_data->map[y][0] == '\n')
 		y++;
 	while (map_data->map[y])
 	{
-		x = 0;
-		while (map_data->map[y][x])
+		x = -1;
+		while (map_data->map[y][++x])
 		{
 			if (map_data->map[y][x] == 'N' || map_data->map[y][x] == 'S'
 				|| map_data->map[y][x] == 'E' || map_data->map[y][x] == 'W')
 			{
+				count++;
+				if (count > 1)
+					return (printf("Error: multiple players\n"), 0);
 				map_data->view_player = map_data->map[y][x];
 				map_data->type = map_data->map[y][x];
 				map_data->x_plyr = (float)x + 0.5f;
 				map_data->y_plyr = (float)y + 0.5f;
-				return ;
 			}
-			x++;
 		}
 		y++;
 	}
+	return (count == 1);
 }
 
 void	limits_map(t_map *map_data)
@@ -94,7 +98,8 @@ int	flood_fill(t_map *map_data)
 	char	**temp;
 
 	temp = copy_map(map_data);
-	find_player(map_data);
+	if (!find_player(map_data))
+		return (ft_free_free(temp), 0);
 	limits_map(map_data);
 	if (!aux_flood_fill(map_data, (int)map_data->x_plyr, (int)map_data->y_plyr,
 			temp))

@@ -275,7 +275,7 @@ int coordinates_parser(t_map *map_data, char **coords);
 
 // Flood_fill.c
 char **copy_map(t_map *map_data);
-void find_player(t_map *map_data);
+int find_player(t_map *map_data);
 void limits_map(t_map *map_data);
 int aux_flood_fill(t_map *map_data, int x, int y, char **map);
 int flood_fill(t_map *map_data);
@@ -287,6 +287,9 @@ int parser(t_map *map_data);
 void ft_free_free(char **temp);
 int char_not_allow(char **map);
 int name_map_parser(char **argv);
-void sky_floor(t_map *map_data);
+static int	is_valid_rgb_value(char *s);
+int	validate_rgb_split(char **rgb);
+int sky_floor(t_map *map_data);
+int tab_parser(char **map);
 
 #endif

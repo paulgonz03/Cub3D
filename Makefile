@@ -1,4 +1,4 @@
-NAME = cube
+NAME = cub3D
 
 MLX_PATH = ./minilibx-linux
 LIBFT_PATH = ./libft
