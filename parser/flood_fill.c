@@ -96,17 +96,26 @@ int	aux_flood_fill(t_map *map_data, int x, int y, char **map)
 int	flood_fill(t_map *map_data)
 {
 	char	**temp;
+	float	sav_x;
+	float	sav_y;
 
 	temp = copy_map(map_data);
 	if (!find_player(map_data))
 		return (ft_free_free(temp), 0);
 	limits_map(map_data);
-	if (!aux_flood_fill(map_data, (int)map_data->x_plyr, (int)map_data->y_plyr,
-			temp))
+	sav_x = map_data->x_plyr;
+	sav_y = map_data->y_plyr;
+	if (!aux_flood_fill(map_data, (int)sav_x, (int)sav_y, temp))
+		return (ft_free_free(temp), 0);
+	while (!char_parser(temp, '0'))
 	{
-		ft_free_free(temp);
-		return (0);
+		find_zero(map_data, temp);
+		if (!aux_flood_fill(map_data, (int)map_data->x_plyr,
+				(int)map_data->y_plyr, temp))
+			return (ft_free_free(temp), 0);
 	}
+	map_data->x_plyr = sav_x;
+	map_data->y_plyr = sav_y;
 	ft_free_free(temp);
 	return (1);
 }

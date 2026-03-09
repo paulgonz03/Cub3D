@@ -55,6 +55,12 @@ typedef struct s_realloc
     int newline;
 } t_realloc;
 
+typedef struct s_coord_state
+{
+    int found[6];
+    int total;
+} t_coord_state;
+
 typedef struct s_files
 {
     char *no_file;
@@ -87,6 +93,7 @@ typedef struct s_minimap
     void *floor_img;
     void *player_img;
     void *void_img;
+    void *fire_img;
     int img_width;
     int img_height;
 
@@ -271,7 +278,9 @@ int get_map(char **argv, t_map *map_data);
 //##################################################
 
 // Coordinates.c
-int realloc_map(t_map *map_data, int pos);
+int	process_line_realloc(t_realloc *data, t_map *map_data, int pos);
+int	realloc_map(t_map *map_data, int pos);
+int	aux_coordinates_parser(t_map *map_data, char *coords[6], int j, int i);
 int coordinates_parser(t_map *map_data, char **coords);
 
 // Flood_fill.c
@@ -284,11 +293,14 @@ int flood_fill(t_map *map_data);
 // Parser.c
 int parser(t_map *map_data);
 
-// Utils_parser.c
+// Char_parser.c
+int	char_parser(char **map, char c);
 int char_not_allow(char **map);
+int	find_zero(t_map *map_data, char **map);
+
+// Utils_parser.c
 int name_map_parser(char **argv);
 int	validate_rgb_split(char **rgb);
 int sky_floor(t_map *map_data);
-int tab_parser(char **map);
 
 #endif

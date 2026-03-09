@@ -27,6 +27,8 @@ static void	*get_tile_img(t_minimap *mini_map, int tile)
 {
 	if (tile == '1')
 		return (mini_map->wall_img);
+	else if (tile == 'T')
+		return (mini_map->fire_img);
 	else if (tile == '0' || tile == 'N' || tile == 'S' || tile == 'E'
 		|| tile == 'W')
 		return (mini_map->floor_img);

@@ -53,8 +53,10 @@ int	load_minimap_textures(t_map *map_data, t_minimap *mini_map)
 			0x1a1a1a);
 	mini_map->player_img = load_texture(mlx_data, "./textures/mini_plyr.xpm",
 			0x00FF00);
+	mini_map->fire_img = load_texture(mlx_data, "./textures/mini_fire.xpm",
+			0xFF6600);
 	if (!mini_map->wall_img || !mini_map->floor_img || !mini_map->void_img
-		|| !mini_map->player_img)
+		|| !mini_map->player_img || !mini_map->fire_img)
 		return (0);
 	return (1);
 }

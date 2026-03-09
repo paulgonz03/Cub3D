@@ -8,14 +8,13 @@ CC = cc
 
 SRC = cube.c free.c \
 ./gnl/map.c ./gnl/get_next_line.c ./gnl/get_next_line_utils.c \
-./parser/flood_fill.c ./parser/parser.c ./parser/coordinates.c ./parser/utils_parser.c \
+./parser/flood_fill.c ./parser/parser.c ./parser/coordinates.c ./parser/utils_parser.c ./parser/char_parser.c\
 ./raycast/raycast.c ./raycast/keys.c ./raycast/textures.c ./raycast/rays.c\
 ./bonus/minimap.c ./bonus/aux_minimap.c ./animated_sprite/animated_sprite.c\
 
 OBJS = ${SRC:%.c=objects/%.o}
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address -I. -I/usr/include -I$(MLX_PATH) -I./libft
-
+CFLAGS = -Wall -Wextra -Werror -g3 -I. -I/usr/include -I$(MLX_PATH) -I./libft -fsanitize=address
 all: $(NAME)
 
 $(NAME): $(OBJS) $(MLX) $(LIBFT)

@@ -4,7 +4,7 @@ int	parser(t_map *map_data)
 {
 	char	*coords[6];
 
-	if (!tab_parser(map_data->map))
+	if (!char_parser(map_data->map, '\t'))
 		return (0);
 	if (!coordinates_parser(map_data, coords))
 		return (0);
